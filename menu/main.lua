@@ -1,4 +1,3 @@
-require("button")
 require("WindowManager")
 require("TestButton")
 
@@ -9,8 +8,8 @@ function love.load()
   love.graphics.setFont(font)
   image = love.graphics.newImage("botones.png")
   backgrund = love.graphics.newImage("JustRight.png")
-  b = Button:new(300, 100, image, "Cerrar", buton1press)
-  b2 = Button:new(300, 300, image, "Batata", buton2press)
+  b = TestButton:new(300, 100, image, "Cerrar", buton1press)
+  b2 = TestButton:new(300, 300, image, "Batata", buton2press)
   love.window.setFullscreen(true)
   
 end

@@ -21,7 +21,21 @@ end
 function windowManager_relCoord(x, y)
   return (x - borderX) / scale, (y - borderY) / scale
 end
-function windowManager_draw(image, x, y, r, sx, sy, ox, oy)
+function windowManager_draw(image, x, y, r, sx, sy, ox, oy, aux)
+  if x and type(x) ~= "number" then
+    if oy and aux then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox, oy, aux)
+    elseif sx and sy then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox)
+    elseif r then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale, scale)
+    elseif x and y then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, 0, scale, scale)
+    else
+      love.graphics.draw(image, x, borderX, borderY, 0, scale, scale)
+    end
+    return
+  end
   if ox and oy then
     love.graphics.draw(image, x * scale + borderX, y * scale + borderY, r, scale * sx, scale * sy, ox, oy)
   elseif sx and sy then
