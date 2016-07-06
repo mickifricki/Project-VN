@@ -1,6 +1,8 @@
 require("src/WindowManager/WindowManager")
-require("src/GUI/TestButton")
-require("src/GUI/TestButton2")
+require("src/GUI/Button")
+require("src/GUI/HoldingButton")
+require("src/GUI/SelectedButton")
+require("src/GUI/ButtonArray")
 require("src/GUI/Background")
 require("src/Scene/SceneMenu")
 require("src/Scene/SceneGame")
@@ -14,37 +16,34 @@ function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {})
   
-  setFont("Papyrus", 35)
+  setFont("Arial", 20)
   
   local image = love.graphics.newImage("assets/Images/botonesv2.0.png")
-  local b1 = new_TestButton(1150, 800, image, "Cerrar", buton1press)
-  local b2 = new_TestButton(750, 800, image, "Configuracion", cambiarEscena)
-  local b3 = new_TestButton(350, 800, image, "Jugar", cambiarEscena)
-  
-  local b4 = new_TestButton(300, 100, image, "Pantalla Completa", buton2press)
-  local b5 = new_TestButton2(300, 300, image, "Patata", buton3press)
-  local b6 = new_TestButton(1150, 800, image, "Aceptar", cambiarEscena)
-  
-  local b7 = new_TestButton(1150, 800, image, "Salir al menú", cambiarEscena)
+  local b3 = new_Button(350, 800, image, "Jugar", cambiarEscena)
   love.window.setFullscreen(fullScreen)
   
   scenes[0] = new_SceneMenu("mainMenu")
   scenes[0]:add(new_Background(love.graphics.newImage("assets/Images/FINALBACKGROUND.png")))
-  scenes[0]:add(b1)
-  scenes[0]:add(b2)
+  scenes[0]:add(new_Button(1150, 800, image, "Cerrar", buton1press))
+  scenes[0]:add(new_Button(750, 800, image, "Configuracion", cambiarEscena))
   scenes[0]:add(b3)
   
   scenes[1] = new_SceneMenu("configMenu")
   scenes[1]:add(new_Background(love.graphics.newImage("assets/Images/fondo.jpg")))
-  scenes[1]:add(b4)
-  scenes[1]:add(b5)
-  scenes[1]:add(b6)
+  scenes[1]:add(new_Button(100, 100, image, "Pantalla Completa", buton2press))
+  scenes[1]:add(new_Button(100, 300, image, "Resolucion"))
+  local resolution = new_ButtonArray()  
+  resolution:add(new_SelectedButton(500, 300, image, "1920x1080", cambiarResolucion, true))
+  resolution:add(new_SelectedButton(900, 300, image, "1280x720", cambiarResolucion, false))
+  resolution:add(new_SelectedButton(1300, 300, image, "800x600", cambiarResolucion, false))
+  
+  scenes[1]:add(resolution)
+  scenes[1]:add(new_Button(1150, 800, image, "Aceptar", cambiarEscena))
   
   scenes[2] = new_SceneGame("game")
   scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/JustRight.png")))
   scenes[2]:addCharacter(b3)
-  scenes[2]:setGUI(b7)
-  
+  scenes[2]:setGUI(new_Button(1150, 800, image, "Salir al menú", cambiarEscena))  
 end
 
 function love.update(dt)
@@ -80,16 +79,20 @@ function buton1press()
 end
 
 function buton2press(button)
-  local fs = not love.window.getFullscreen()
-  love.window.setFullscreen(fs)
-  windowManager_update(fs)
+  love.window.setFullscreen(not love.window.getFullscreen())
   if(love.window.getFullscreen()) then button:setText("Windowed")
   else button:setText("Fullscreen") end
 end
 
-function buton3press(button)
-  love.graphics.setColor(0, 0, 0)
-  windowManager_print("Stil here", 0, 0)
+function cambiarResolucion(button)
+  local i = 0
+  local d = {}
+  for n in string.gmatch(button:getText(), "%d+") do
+    d[i] = n
+    i = i + 1
+  end
+  love.window.setMode(d[0], d[1], {})
+  love.resize()
 end
 
 function cambiarEscena(button)
