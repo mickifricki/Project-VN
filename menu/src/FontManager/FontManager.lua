@@ -1,9 +1,6 @@
 local font = {}
 
-function addFont(path, name)
-  font[name] = love.filesystem.newFileData(path)
-end
-
-function getFont(name, size)
-  return love.graphics.newFont(font[name], size)
+function setFont(name, size)
+  if font[name] == nil then font[name] = love.filesystem.newFileData("/assets/fonts/" .. name .. ".ttf") end
+  love.graphics.setFont(love.graphics.newFont(font[name], size))
 end

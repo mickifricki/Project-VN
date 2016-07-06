@@ -6,15 +6,17 @@ local borderY = 0
 local width = WINDOW_WIDTH
 local height = WINDOW_HEIGHT
 
-function love.resize()
-  width, height = love.window.getDesktopDimensions()
+function windowManager_update(fullScreen)
+  width, height = love.graphics.getDimensions()
   if width / height > WINDOW_WIDTH / WINDOW_HEIGHT then
     scale = height / WINDOW_HEIGHT
-    borderX = (width - WINDOW_WIDTH * scale) / 2
+    if love.window.getFullscreen then borderX = (width - WINDOW_WIDTH * scale) / 2
+    else borderX = 0 end
     borderY = 0
   else
     scale = width / WINDOW_WIDTH
-    borderY = (height - WINDOW_HEIGHT * scale) / 2 
+    if love.window.getFullscreen then borderY = (height - WINDOW_HEIGHT * scale) / 2 
+    else borderY = 0 end
     borderX = 0
   end
 end
