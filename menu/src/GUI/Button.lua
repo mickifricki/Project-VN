@@ -8,13 +8,15 @@ local Button = {
   
   x2 = 0,
   y2 = 0,
-  pressed = false
+  pressed = false,
+  hovered = false
 }
 
 function new_Button(x, y, w, h, text, func)
   local o = {}
   setmetatable(o, Button)
   Button.__index = Button
+  o.id = id
   o.x = x
   o.y = y
   o.w = w
@@ -54,19 +56,27 @@ function Button:setText(text)
 end
 
 function Button:isPressed()
-  return pressed
+  return self.pressed
 end
 
+function Button:isHovered()
+  return self.hovered
+end
+
+function Button:inBounds(x, y)
+  return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
+end
 
 function Button:draw()
   love.graphics.setColor(0, 0, 0)
-  windowManager_print(self.text, self.x + self.w/2 - font:getWidth(self.text)/2, self.y + self.h/2 - font:getHeight(self.text)/2)  
-  if self.pressed then self.func() end
+  local font = love.graphics.getFont()
+  windowManager_print(self.text, self.x + self.w/2 - font:getWidth(self.text)/2, self.y + self.h/2 - font:getHeight(self.text)/2)
 end
 
 function Button:mousepressed(x, y, b)
   if self:inBounds(x, y) then
     self.pressed = true
+    if self.func then self.func(self) end
   end
 end
 
@@ -74,6 +84,6 @@ function Button:mousereleased(x, y, b)
   self.pressed = false
 end
 
-function Button:inBounds(x, y)
-  return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
+function Button:mousehover(x, y, b)
+    self.hovered = self:inBounds(x, y)
 end
