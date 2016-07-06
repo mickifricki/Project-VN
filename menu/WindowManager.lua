@@ -18,22 +18,41 @@ function love.resize()
     borderX = 0
   end
 end
+
 function windowManager_relCoord(x, y)
   return (x - borderX) / scale, (y - borderY) / scale
 end
-function windowManager_draw(image, x, y, r, sx, sy, ox, oy)
+
+function windowManager_draw(image, x, y, r, sx, sy, ox, oy, aux)
+  if not x then
+    love.graphics.draw(image, borderX, borderY, 0, scale, scale)
+    return
+  end
+  
+  if type(x) ~= "number" then
+    if oy and aux then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox, oy, aux)
+    elseif sy and ox then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox)
+    elseif sx then
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, sx, scale, scale)
+    else
+      love.graphics.draw(image, x, y * scale + borderX, r * scale + borderY, 0, scale, scale)
+    end
+    return
+  end
+  
   if ox and oy then
     love.graphics.draw(image, x * scale + borderX, y * scale + borderY, r, scale * sx, scale * sy, ox, oy)
   elseif sx and sy then
     love.graphics.draw(image, x * scale + borderX, y * scale + borderY, r, scale * sx, scale * sy)
   elseif r then
     love.graphics.draw(image, x * scale + borderX, y * scale + borderY, r, scale, scale)
-  elseif x and y then
-    love.graphics.draw(image, x * scale + borderX, y * scale + borderY, 0, scale, scale)
   else
-    love.graphics.draw(image, borderX, borderY, 0, scale, scale)
+    love.graphics.draw(image, x * scale + borderX, y * scale + borderY, 0, scale, scale)
   end
 end
+
 function windowManager_print(text, x, y, r, sx, sy, ox, oy)
   if ox and oy then
     love.graphics.print(text, x * scale + borderX, y * scale + borderY, r, scale * sx, scale * sy, ox, oy)
@@ -47,6 +66,7 @@ function windowManager_print(text, x, y, r, sx, sy, ox, oy)
     love.graphics.print(text, borderX, borderY, 0, scale, scale)
   end
 end
+
 function windowManager_drawBorders()
   if borderX > 0 then
     love.graphics.rectangle("fill", 0, 0, borderX, height)

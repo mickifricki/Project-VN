@@ -1,44 +1,79 @@
-Button = {
-  x = 0, 
-  y = 0, 
-  text = "", 
-  image = nil,
+local Button = {
+  x = 0,
+  y = 0,
+  w = 0,
+  h = 0,
+  text = "",
   func = nil,
   
   x2 = 0,
-  y2 = 0, 
+  y2 = 0,
   pressed = false
 }
-function Button:new(x, y, image, text, func)
-  o = {}
-  setmetatable(o, self)
-  self.__index = self
+
+function new_Button(x, y, w, h, text, func)
+  local o = {}
+  setmetatable(o, Button)
+  Button.__index = Button
   o.x = x
   o.y = y
-  o.image = image
+  o.w = w
+  o.h = h
   o.text = text
   o.func = func
-  width = 100
-  height = 50
-  o.x2 = x + width
-  o.y2 = y + height
+  
+  o.x2 = x + w
+  o.y2 = y + h
   return o
 end
-function Button:draw()
-  love.graphics.setColor(255,255,255)
-  windowManager_draw(self.image, self.x, self.y, 0, 1 ,1 ,width, height)
-  love.graphics.setColor(0, 0, 0)
-  windowManager_print(tostring(self.pressed), self.x - 10, self.y)
-  windowManager_print(self.text, self.x + (self.image:getWidth()/2) - (font:getWidth(self.text)/2), self.y + (self.image:getHeight()/2) - (font:getHeight(self.text)/2))
-  if self.pressed then
-    self.func()
-  end
+
+function Button:getPosition()
+  return self.x, self.y
 end
+
+function Button:setPosition(x, y)
+  self.x = x
+  self.y = y
+end
+
+function Button:getDimensions()
+  return self.w, self.h
+end
+
+function Button:setDimensions(w, h)
+  self.w = w
+  self.h = h
+end
+
+function Button:getText()
+  return self.text
+end
+
+function Button:setText(text)
+  self.text = text
+end
+
+function Button:isPressed()
+  return pressed
+end
+
+
+function Button:draw()
+  love.graphics.setColor(0, 0, 0)
+  windowManager_print(self.text, self.x + self.w/2 - font:getWidth(self.text)/2, self.y + self.h/2 - font:getHeight(self.text)/2)  
+  if self.pressed then self.func() end
+end
+
 function Button:mousepressed(x, y, b)
-  if x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2 then
+  if self:inBounds(x, y) then
     self.pressed = true
   end
 end
+
 function Button:mousereleased(x, y, b)
-    self.pressed = false
+  self.pressed = false
+end
+
+function Button:inBounds(x, y)
+  return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
 end
