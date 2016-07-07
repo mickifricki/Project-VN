@@ -54,6 +54,12 @@ function SelectedButton:mousehover(x, y, dx, dy)
   self.buttonBase:mousehover(x, y, dx, dy)
 end
 
+function SelectedButton:keypressed(key, scancode, isrepeat)
+end
+  
+function SelectedButton:keyreleased(key, scancode, isrepeat)  
+end
+
 function SelectedButton:isPressed()
   return self.buttonBase:isPressed()
 end

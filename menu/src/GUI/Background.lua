@@ -24,3 +24,9 @@ end
 
 function Background:mousehover(x, y, b)
 end
+
+function Background:keypressed(key, scancode, isrepeat)
+end
+  
+function Background:keyreleased(key, scancode, isrepeat)  
+end

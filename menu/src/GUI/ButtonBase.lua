@@ -16,7 +16,6 @@ function new_ButtonBase(x, y, w, h, text, func)
   local o = {}
   setmetatable(o, ButtonBase)
   ButtonBase.__index = ButtonBase
-  o.id = id
   o.x = x
   o.y = y
   o.w = w
@@ -86,4 +85,10 @@ end
 
 function ButtonBase:mousehover(x, y, b)
     self.hovered = self:inBounds(x, y)
+end
+
+function ButtonBase:keypressed(key, scancode, isrepeat)
+end
+  
+function ButtonBase:keyreleased(key, scancode, isrepeat)  
 end

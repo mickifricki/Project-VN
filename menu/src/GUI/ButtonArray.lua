@@ -1,4 +1,3 @@
-require("src/WindowManager/WindowManager")
 require("src/GUI/SelectedButton")
 
 local ButtonArray = {
@@ -36,6 +35,15 @@ end
 
 function ButtonArray:mousehover(x, y, dx, dy, istouch)
   for i, e in ipairs(self.buttons) do e:mousehover(x, y, dx, dy, istouch) end
+end
+
+function ButtonArray:keypressed(key, scancode, isrepeat)
+  if key == "right" or key == "" then
+  end
+end
+  
+function ButtonArray:keyreleased(key, scancode, isrepeat)  
+  for i, e in ipairs(self.buttons) do e:keyreleased(key, scancode, isrepeat) end
 end
 
 function ButtonArray:add(button)

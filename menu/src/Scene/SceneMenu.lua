@@ -50,3 +50,11 @@ end
 function SceneMenu:mousemoved(x, y, dx, dy, istouch)
   for i, e in ipairs(self.elements) do e:mousehover(x, y, dx, dy, istouch) end
 end
+
+function SceneMenu:keypressed(key, scancode, isrepeat)
+  for i, e in ipairs(self.elements) do e:keypressed(key, scancode, isrepeat) end
+end
+  
+function SceneMenu:keyreleased(key, scancode, isrepeat)
+  for i, e in ipairs(self.elements) do e:keyreleased(key, scancode, isrepeat) end
+end

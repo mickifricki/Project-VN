@@ -94,3 +94,11 @@ end
 function SceneGame:mousemoved(x, y, dx, dy, istouch)
   self.GUI:mousehover(x, y, dx, dy, istouch)
 end
+
+function SceneGame:keypressed(key, scancode, isrepeat)
+  self.GUI:keypressed(key, scancode, isrepeat)
+end
+  
+function SceneGame:keyreleased(key, scancode, isrepeat)
+  self.GUI:keyreleased(key, scancode, isrepeat)
+end

@@ -31,3 +31,9 @@ end
 function HoldingButton:mousehover(x, y, b)
   self.button:mousehover(x, y, b)
 end
+
+function HoldingButton:keypressed(key, scancode, isrepeat)
+end
+  
+function HoldingButton:keyreleased(key, scancode, isrepeat)  
+end
