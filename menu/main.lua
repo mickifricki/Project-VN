@@ -23,8 +23,9 @@ local currentScene = 0
 
 function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
-  love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {})
-  
+  local w, h = love.window.getDesktopDimensions()
+  windowManager_resize(w * 0.8, h * 0.8)
+
   setFont("Meiryo", 20)
   
   local textbox = new_Textbox(80, 900, 1800, 120, "Meiryo", 40, "typewriter")
@@ -36,7 +37,6 @@ function love.load()
   local image = love.graphics.newImage("assets/Images/botonesv2.0.png")
   local imbutton = love.graphics.newImage("assets/Images/bottonsimple.png")
   love.window.setFullscreen(fullScreen)
-  
   ---------------------------------------------------------------------------------------------------
   scenes[0] = new_SceneMenu("mainMenu")
   scenes[0]:add(new_Background(love.graphics.newImage("assets/Images/FINALBACKGROUND.png")))
@@ -64,7 +64,8 @@ function love.load()
   local resolution = new_ButtonArray()
   resolution:add(new_MenuTab(500, 300, imbutton, "1920x1080", cambiarResolucion))
   resolution:add(new_MenuTab(650, 300, imbutton, "1600x900", cambiarResolucion))
-  resolution:add(new_MenuTab(800, 300, imbutton, "800x600", cambiarResolucion))
+  resolution:add(new_MenuTab(800, 300, imbutton, "1280x720", cambiarResolucion))
+  resolution:add(new_MenuTab(950, 300, imbutton, "800x600", cambiarResolucion))
   scenes[1]:add(resolution)
   
   scenes[1]:add(acceptbutton)
@@ -143,8 +144,7 @@ function cambiarResolucion(button)
     d[i] = n
     i = i + 1
   end
-  love.window.setMode(d[0], d[1], {})
-  love.resize()
+   windowManager_resize(d[0], d[1])
 end
 
 function cambiarEscena(button)
