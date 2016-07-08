@@ -25,9 +25,9 @@ function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {})
   
-  setFont("Arial", 20)
+  setFont("Meiryo", 20)
   
-  local textbox = new_Textbox(80, 0, 1800, 100, "Arial", 40, "typewriter")
+  local textbox = new_Textbox(80, 900, 1800, 120, "Meiryo", 40, "typewriter")
   local formatedText = textbox:format("En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda. El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino. Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera. Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza.")  for i, e in ipairs(formatedText) do
     print(e)
   end
@@ -35,15 +35,15 @@ function love.load()
   
   local image = love.graphics.newImage("assets/Images/botonesv2.0.png")
   local imbutton = love.graphics.newImage("assets/Images/bottonsimple.png")
-  local b3 = new_Button(350, 800, image, "Jugar", cambiarEscena)
   love.window.setFullscreen(fullScreen)
   
+  ---------------------------------------------------------------------------------------------------
   scenes[0] = new_SceneMenu("mainMenu")
   scenes[0]:add(new_Background(love.graphics.newImage("assets/Images/FINALBACKGROUND.png")))
   scenes[0]:add(new_Button(1150, 800, image, "Cerrar", buton1press))
   scenes[0]:add(new_Button(750, 800, image, "Configuracion", cambiarEscena))
-  scenes[0]:add(b3)
-  -------------------------------------------------------------------------------------
+  scenes[0]:add(new_Button(350, 800, image, "Jugar", cambiarEscena))
+  ---------------------------------------------------------------------------------------------------
   local configbackground = new_Background(love.graphics.newImage("assets/Images/fondo.jpg"))
   local acceptbutton = new_Button(1150, 800, image, "Aceptar", cambiarEscena)
   scenes[1] = new_SceneMenu("config_video")
@@ -69,7 +69,7 @@ function love.load()
   
   scenes[1]:add(acceptbutton)
   
-  -------------------------------------------------------------------------------------
+  ---------------------------------------------------------------------------------------------------
   scenes[3] = new_SceneMenu("config_audio")
   scenes[3]:add(configbackground)
   scenes[3]:add(tabs)
@@ -82,12 +82,12 @@ function love.load()
   scenes[3]:add(options)  
   
   scenes[3]:add(acceptbutton)
-  -------------------------------------------------------------------------------------
-  
+  ---------------------------------------------------------------------------------------------------  
   scenes[2] = new_SceneGame("game")
   scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/JustRight.png")))
-  scenes[2]:addCharacter(b3)
-  scenes[2]:setGUI(textbox)  
+  scenes[2]:addCharacter(new_MenuButton(80, 820, imbutton, "Pacha", function() end))
+  scenes[2]:setGUI(textbox)
+  ---------------------------------------------------------------------------------------------------  
 end
 
 function love.update(dt)

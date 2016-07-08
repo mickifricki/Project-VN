@@ -41,11 +41,12 @@ function Textbox:format(text)
   local lines = {}
   local font = getFont(self.font, self.size)
   local currentLine = ""
-  for i in string.gmatch(text, "[^ ]+%s*") do
-    if font:getWidth(currentLine .. i) <= self.w then currentLine = currentLine .. i
+  for i in string.gmatch(text, "[^ ]+[ \t]*") do
+    if string.find(i, "\n") == nil and font:getWidth(currentLine .. i) <= self.w then
+      currentLine = currentLine .. string.match(i, "%S+") .. " "
     else
       table.insert(lines, currentLine)
-      currentLine = i
+      currentLine = string.match(i, "%S+") .. " "
     end
   end
   table.insert(lines, currentLine)
@@ -76,8 +77,7 @@ function Textbox:draw()
       local currentTime = love.timer.getTime()
       if currentTime - self.timer >= velocity then
         self.timer = currentTime
-        if self.index < string.utf8len(self.text[l + self.currentLine]) then
-          self.index = self.index + 1
+        if self.index < string.utf8len(self.text[l + self.currentLine]) then self.index = self.index + 1
         else
           self.index = 1
           self.line = self.line + 1
@@ -106,7 +106,7 @@ function Textbox:mousehover(x, y, dx, dy)
 end
 
 function Textbox:keypressed(key, scancode, isrepeat)
-  
+  if key == "return" or key == "z" or key == "space" then self:mousepressed(0, 0, 0) end
 end
   
 function Textbox:keyreleased(key, scancode, isrepeat)  

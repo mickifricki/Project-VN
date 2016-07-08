@@ -97,7 +97,8 @@ function MenuButton:draw()
     windowManager_draw(self.texture, self.sprites[2], x, self.y)
   end
   
-  love.graphics.setColor(0, 0, 0)
+  love.graphics.setFont(self.font)
+  love.graphics.setColor(0,0,0)
   windowManager_print(self.text, self.x + self.w/2 - self.font:getWidth(self.text)/2, self.y + self.h/2 - self.font:getHeight(self.text)/2)
 end
 

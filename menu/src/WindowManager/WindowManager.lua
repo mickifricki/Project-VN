@@ -11,7 +11,10 @@ function love.resize()
   if width / height > WINDOW_WIDTH / WINDOW_HEIGHT then
     scale = height / WINDOW_HEIGHT
     borderX = (width - WINDOW_WIDTH * scale) / 2
-    if love.window.getFullscreen and borderX ~= 0 then love.window.setMode(WINDOW_WIDTH - borderX * 2, WINDOW_HEIGHT, {}) end
+    if love.window.getFullscreen and borderX ~= 0 then
+      love.window.setMode(WINDOW_WIDTH - borderX * 2, WINDOW_HEIGHT, {})
+      borderX = 0
+    end
     borderY = 0
   else
     scale = width / WINDOW_WIDTH
