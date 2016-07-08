@@ -1,5 +1,6 @@
 local Character = {
-  id = "",
+  id = 0,
+  name = "",
   x = 0,
   y = 0,
   poses = nil,
@@ -13,13 +14,27 @@ local Character = {
   mt = 0
 }
 
-function new_Character(id)
+function new_Character(id, name)
   local o = {}
   setmetatable(o, Character)
   Character.__index = Character
   o.id = id
+  o.name = name
   o.poses = {}
   return o
+end
+
+function Character:getId()
+  return self.id
+end
+  
+function Character:getName()
+  return self.name
+end
+
+function Character:setPosition(x, y)
+  self.x = x
+  self.y = y
 end
 
 function Character:addPose(id, pose)
@@ -34,11 +49,6 @@ function Character:triggerAnimation(animation)
   if animation == "eyes" then self.currentPose:triggerEyes()
   elseif animation == "mouth" then self.currentPose:triggerMouth() end
 end
-
-function Character:draw()
-  self.currentPose:draw(self.x, self.y)
-end
-
 function Character:move(x, y, time)
   self.ix = self.x
   self.iy = self.y
@@ -50,17 +60,23 @@ end
 
 function Character:update(dt)
   if self.ms ~= 0 then
-    local time = love.timer.getTime() - self.mt
-    if time < self.ms then
-      self.x = self.ix + (time / self.ms) * self.mx
-      self.y = self.iy + (time / self.ms) * self.my
+    local delta = love.timer.getTime() - self.mt
+    if delta < self.ms then
+      self.x = self.ix + (delta / self.ms) * self.mx
+      self.y = self.iy + (delta / self.ms) * self.my
+      print(self.x, self.ix, self.mx)
     else
-      self.x = self.mx
-      self.y = self.my
+      self.x = self.ix + self.mx
+      self.y = self.iy + self.my
       self.ms = 0
     end
   end
 end
+
+function Character:draw()
+  self.currentPose:draw(self.x, self.y)
+end
+
 
 function Character:mousepressed(x, y, b)
 end

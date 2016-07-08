@@ -89,7 +89,8 @@ function love.load()
   scenes[2] = new_SceneGame("game")
   scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/background.jpg")))
   
-  isaac = new_Character("Isaac")
+  ---------------------------------------------------------------------------------------------------  
+  isaac = new_Character(1, "Isaac")
   local imgisaac = love.graphics.newImage("assets/Images/isaac.png")
   local pose1 = new_Pose(imgisaac)
   
@@ -99,8 +100,10 @@ function love.load()
   
   isaac:addPose("normal", pose1)
   isaac:setPose("normal")
-  isaac:move(700, 272, 0.01)
+  isaac:setPosition(700, 272)
   scenes[2]:addCharacter(isaac)
+  
+  ---------------------------------------------------------------------------------------------------  
   
   local GUI = new_SceneGUI("GUI")
   GUI:add(new_Button(350, 800, image, "Salir al menú", cambiarEscena))

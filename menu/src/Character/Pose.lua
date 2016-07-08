@@ -4,16 +4,16 @@ local Pose = {
   
   ex = 0,
   ey = 0,
-  et = 0,
   eyes = nil,
   
   mx = 0,
   my = 0,
-  mt = 0,
   mouth = nil,
 
   fe = -1,
-  fm = -1
+  et = 0,
+  fm = -1,
+  mt = 0
 }
 
 function new_Pose(image)
@@ -34,8 +34,8 @@ function Pose:addQuad(comp, quad, x, y)
       self.ex = x
       self.ey = y
     end
-  elseif
-    comp == "mouth" then table.insert(self.mouth, quad)
+  elseif comp == "mouth" then
+    table.insert(self.mouth, quad)
     if x and y then
       self.mx = x
       self.my = y
@@ -51,8 +51,8 @@ end
 
 function Pose:draw(x, y)
   windowManager_draw(self.image, self.body, x, y)
+  
   local currTime = love.timer.getTime()
-  print(currTime - self.et, self.fe)
   
   if self.fe >= 0 then
     if self.fe == 3 then self.fe = -1
