@@ -7,7 +7,8 @@ local width = WINDOW_WIDTH
 local height = WINDOW_HEIGHT
 
 function windowManager_resize(width, height)
-  love.window.setMode(width, height, {})
+  if width and height then love.window.setMode(width, height, {})
+  else width, height = love.graphics.getDimensions() end
   if width / height > WINDOW_WIDTH / WINDOW_HEIGHT then
     scale = height / WINDOW_HEIGHT
     borderX = (width - WINDOW_WIDTH * scale) / 2
@@ -21,6 +22,11 @@ function windowManager_resize(width, height)
     borderY = (height - WINDOW_HEIGHT * scale) / 2
     borderX = 0
   end
+end
+
+function windowManager_fullscreen(flag)
+  love.window.setFullscreen(flag)
+  windowManager_resize()
 end
 
 function windowManager_relCoord(x, y)
@@ -57,7 +63,30 @@ function windowManager_draw(image, x, y, r, sx, sy, ox, oy, aux)
   end
 end
 
-function windowManager_print(text, x, y, r, sx, sy, ox, oy)
+function windowManager_print(text, x, y, r, sx, sy, ox, oy, aux)
+  if not x then
+    love.graphics.print(text, borderX, borderY, 0, scale, scale)
+    return
+  end
+  
+  if type(x) ~= "number" then
+    local font = love.graphics.getFont()
+    love.graphics.setFont(x)
+    
+    if oy and aux then
+      love.graphics.print(text, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox, oy, aux)
+    elseif sy and ox then
+      love.graphics.print(text, y * scale + borderX, r * scale + borderY, sx, scale * sy, scale * ox)
+    elseif sx then
+      love.graphics.print(text, y * scale + borderX, r * scale + borderY, sx, scale, scale)
+    else
+      love.graphics.print(text, y * scale + borderX, r * scale + borderY, 0, scale, scale)
+    end
+    
+    love.graphics.setFont(font)
+    return
+  end
+  
   if ox and oy then
     love.graphics.print(text, x * scale + borderX, y * scale + borderY, r, scale * sx, scale * sy, ox, oy)
   elseif sx and sy then
@@ -72,12 +101,18 @@ function windowManager_print(text, x, y, r, sx, sy, ox, oy)
 end
 
 function windowManager_drawBorders()
-  if borderX > 0 then
+  local r, g, b, a = love.graphics.getColor()
+  love.graphics.setColor(0, 0, 0, 255)
+    
+  if borderX > 0 then    
     love.graphics.rectangle("fill", 0, 0, borderX, height)
-    love.graphics.rectangle("fill", width - borderX, 0, borderX, height)
+    love.graphics.rectangle("fill", width - borderX, 0, borderX, height)    
   elseif borderY > 0 then
     love.graphics.rectangle("fill", 0, 0, width, borderY)
     love.graphics.rectangle("fill", 0, height - borderY, width, borderY)
+    
   end
+  
+  love.graphics.setColor(r, g, b, a)
 end
 

@@ -77,6 +77,9 @@ function MenuTab:inBounds(x, y)
   return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
 end
 
+function MenuTab:update(dt)
+end
+
 function MenuTab:draw()
   love.graphics.setColor(255, 255, 255)    
   if self.selected then

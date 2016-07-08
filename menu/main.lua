@@ -2,6 +2,10 @@ require("src/FontManager/FontManager")
 
 require("src/Scene/SceneMenu")
 require("src/Scene/SceneGame")
+require("src/Scene/SceneGUI")
+
+require("src/Character/Character")
+require("src/Character/Pose")
 
 require("src/GUI/Background")
 
@@ -29,14 +33,12 @@ function love.load()
   setFont("Meiryo", 20)
   
   local textbox = new_Textbox(80, 900, 1800, 120, "Meiryo", 40, "typewriter")
-  local formatedText = textbox:format("En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda. El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino. Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera. Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza.")  for i, e in ipairs(formatedText) do
-    print(e)
-  end
+  local formatedText = textbox:format("En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.\n Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda.\n El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino.\n Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera.\n Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza.")
   textbox:setLines(formatedText)
   
   local image = love.graphics.newImage("assets/Images/botonesv2.0.png")
   local imbutton = love.graphics.newImage("assets/Images/bottonsimple.png")
-  love.window.setFullscreen(fullScreen)
+  windowManager_fullscreen(fullScreen)
   ---------------------------------------------------------------------------------------------------
   scenes[0] = new_SceneMenu("mainMenu")
   scenes[0]:add(new_Background(love.graphics.newImage("assets/Images/FINALBACKGROUND.png")))
@@ -85,14 +87,34 @@ function love.load()
   scenes[3]:add(acceptbutton)
   ---------------------------------------------------------------------------------------------------  
   scenes[2] = new_SceneGame("game")
-  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/JustRight.png")))
-  scenes[2]:addCharacter(new_MenuButton(80, 820, imbutton, "Pacha", function() end))
-  scenes[2]:setGUI(textbox)
+  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/background.jpg")))
+  
+  isaac = new_Character("Isaac")
+  local imgisaac = love.graphics.newImage("assets/Images/isaac.png")
+  local pose1 = new_Pose(imgisaac)
+  
+  pose1:addQuad("body", love.graphics.newQuad(0,0,461,607,imgisaac:getWidth(),imgisaac:getHeight()))
+  pose1:addQuad("eyes", love.graphics.newQuad(520,43,149,37,imgisaac:getWidth(),imgisaac:getHeight()), 154, 207)
+  pose1:addQuad("eyes", love.graphics.newQuad(520,82,149,37,imgisaac:getWidth(),imgisaac:getHeight()))
+  
+  isaac:addPose("normal", pose1)
+  isaac:setPose("normal")
+  isaac:move(700, 272, 0.01)
+  scenes[2]:addCharacter(isaac)
+  
+  local GUI = new_SceneGUI("GUI")
+  GUI:add(new_Button(350, 800, image, "Salir al menú", cambiarEscena))
+  GUI:add(new_MenuButton(80, 820, imbutton, "Isaac", function() end))
+  GUI:add(textbox)
+  
+  scenes[2]:setGUI(GUI)
+  
   ---------------------------------------------------------------------------------------------------  
 end
 
 function love.update(dt)
-  
+  if math.random(0, 140) == 0 then isaac:triggerAnimation("eyes") end
+  scenes[currentScene]:update(dt)
 end
 
 function love.draw()  
@@ -132,7 +154,7 @@ function buton1press()
 end
 
 function buton2press(button)
-  love.window.setFullscreen(not love.window.getFullscreen())
+  windowManager_fullscreen(not love.window.getFullscreen())
   if(love.window.getFullscreen()) then button:setText("Windowed")
   else button:setText("Fullscreen") end
 end
@@ -144,7 +166,7 @@ function cambiarResolucion(button)
     d[i] = n
     i = i + 1
   end
-   windowManager_resize(d[0], d[1])
+  windowManager_resize(d[0], d[1])
 end
 
 function cambiarEscena(button)

@@ -13,6 +13,9 @@ function new_ButtonArray()
   return o
 end
 
+function ButtonArray:update(dt)
+end
+
 function ButtonArray:draw()
   for i, e in ipairs(self.buttons) do e:draw() end
 end

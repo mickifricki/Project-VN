@@ -28,6 +28,9 @@ function new_SelectedButton(x, y, image, text, func, init)
   return o
 end
 
+function SelectedButton:update(dt)
+end
+
 function SelectedButton:draw()
   love.graphics.setColor(255, 255, 255)
   if self.selected then

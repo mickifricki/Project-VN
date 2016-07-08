@@ -47,7 +47,6 @@ function new_MenuButton(x, y, image, text, func)
   return o
 end
 
-
 function MenuButton:getPosition()
   return self.x, self.y
 end
@@ -71,6 +70,9 @@ end
 
 function MenuButton:inBounds(x, y)
   return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
+end
+
+function MenuButton:update(dt)
 end
 
 function MenuButton:draw()

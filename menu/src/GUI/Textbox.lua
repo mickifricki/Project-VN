@@ -42,11 +42,15 @@ function Textbox:format(text)
   local font = getFont(self.font, self.size)
   local currentLine = ""
   for i in string.gmatch(text, "[^ ]+[ \t]*") do
-    if string.find(i, "\n") == nil and font:getWidth(currentLine .. i) <= self.w then
-      currentLine = currentLine .. string.match(i, "%S+") .. " "
+    if string.find(i, "\n") == nil then
+      if font:getWidth(currentLine .. i) <= self.w then currentLine = currentLine .. string.match(i, "%S+") .. " "
+      else
+        table.insert(lines, currentLine)
+        currentLine = string.match(i, "%S+") .. " "
+      end
     else
-      table.insert(lines, currentLine)
-      currentLine = string.match(i, "%S+") .. " "
+      table.insert(lines, currentLine .. string.match(i, "%S+"))
+      currentLine = ""
     end
   end
   table.insert(lines, currentLine)
@@ -57,23 +61,25 @@ function Textbox:setLines(lines)
   self.text = lines
 end
 
+function Textbox:update(dt)
+end
+
 function Textbox:draw()
-  setFont(self.font, self.size, 0, 0, 0)
   local font = getFont(self.font, self.size)
   local l = 0
   
   if self.mode == "normal" then
     while l < self.nl and l < table.getn(self.text) do
-      windowManager_print(self.text[l + self.currentLine], self.x, self.y + l * self.size)
+      windowManager_print(self.text[l + self.currentLine], font, self.x, self.y + l * self.size)
       l = l + 1
     end
   elseif self.mode == "typewriter" then
     while l < self.nl and l < self.line do
-      windowManager_print(self.text[l + self.currentLine], self.x, self.y + l * self.size)
+      windowManager_print(self.text[l + self.currentLine], font, self.x, self.y + l * self.size)
       l = l + 1
     end
     if self.line < self.nl and self.line + self.currentLine <= table.getn(self.text) then
-      windowManager_print(string.utf8sub(self.text[l + self.currentLine], 0, self.index), self.x, self.y + l * self.size)
+      windowManager_print(string.utf8sub(self.text[l + self.currentLine], 0, self.index), font, self.x, self.y + l * self.size)
       local currentTime = love.timer.getTime()
       if currentTime - self.timer >= velocity then
         self.timer = currentTime

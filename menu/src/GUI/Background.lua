@@ -12,6 +12,9 @@ function new_Background(background)
   return o
 end
 
+function Background:update(dt)
+end
+
 function Background:draw()
   windowManager_draw(self.image)
 end

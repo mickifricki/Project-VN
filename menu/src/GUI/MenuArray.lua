@@ -14,6 +14,9 @@ function new_MenuArray()
   return o
 end
 
+function MenuArray:update(dt)
+end
+
 function MenuArray:draw()
   for i, e in ipairs(self.buttons) do e:draw() end
 end

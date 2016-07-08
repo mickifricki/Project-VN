@@ -27,6 +27,9 @@ function new_Button(x, y, image, text, func)
   return o
 end
 
+function Button:update(dt)
+end
+
 function Button:draw()
   love.graphics.setColor(255, 255, 255)
   if self.buttonBase:isPressed() then

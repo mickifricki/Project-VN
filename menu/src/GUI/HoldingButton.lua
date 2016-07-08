@@ -15,6 +15,9 @@ function new_HoldingButton(x, y, image, text, func)
   return o
 end
 
+function HoldingButton:update(dt)
+end
+
 function HoldingButton:draw()
   self.button:draw()
   if self.button:isPressed() then self.func(button) end

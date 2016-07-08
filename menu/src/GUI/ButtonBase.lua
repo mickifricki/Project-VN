@@ -66,6 +66,9 @@ function ButtonBase:inBounds(x, y)
   return x >= self.x and x <= self.x2 and y >= self.y and y <= self.y2
 end
 
+function ButtonBase:update(dt)
+end
+
 function ButtonBase:draw()
   love.graphics.setColor(0, 0, 0)
   local font = love.graphics.getFont()
