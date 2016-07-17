@@ -1,6 +1,6 @@
 require("lib/UTF8/utf8")
 
-velocity = 0.01
+velocity = 0.1
 
 local Textbox = {
   x = 0,
@@ -78,6 +78,7 @@ function Textbox:draw()
       windowManager_print(self.text[l + self.currentLine], font, self.x, self.y + l * self.size)
       l = l + 1
     end
+    
     if self.line < self.nl and self.line + self.currentLine <= table.getn(self.text) then
       windowManager_print(string.utf8sub(self.text[l + self.currentLine], 0, self.index), font, self.x, self.y + l * self.size)
       local currentTime = love.timer.getTime()

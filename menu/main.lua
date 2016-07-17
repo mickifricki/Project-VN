@@ -3,6 +3,7 @@ require("src/FontManager/FontManager")
 require("src/Scene/SceneMenu")
 require("src/Scene/SceneGame")
 require("src/Scene/SceneGUI")
+require("src/Scene/SceneIntro")
 
 require("src/Character/Character")
 require("src/Character/Pose")
@@ -23,30 +24,32 @@ require("src/GUI/Textbox")
 
 local fullScreen = false
 local scenes = {}
-local currentScene = 0
+currentScene = -1
 
 function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
   local w, h = love.window.getDesktopDimensions()
   windowManager_resize(w * 0.8, h * 0.8)
-
+  
+  scenes[-1] = new_SceneIntro()
+  
   setFont("Meiryo", 20)
   
   local textbox = new_Textbox(80, 900, 1800, 120, "Meiryo", 40, "typewriter")
-  local formatedText = textbox:format("En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.\n Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda.\n El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino.\n Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera.\n Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza.")
+  local formatedText = textbox:format("Hola :D")
   textbox:setLines(formatedText)
   
-  local image = love.graphics.newImage("assets/Images/botonesv2.0.png")
-  local imbutton = love.graphics.newImage("assets/Images/bottonsimple.png")
+  local image = love.graphics.newImage("assets/images/botonesv2.0.png")
+  local imbutton = love.graphics.newImage("assets/images/bottonsimple.png")
   windowManager_fullscreen(fullScreen)
   ---------------------------------------------------------------------------------------------------
   scenes[0] = new_SceneMenu("mainMenu")
-  scenes[0]:add(new_Background(love.graphics.newImage("assets/Images/FINALBACKGROUND.png")))
+  scenes[0]:add(new_Background(love.graphics.newImage("assets/images/FINALBACKGROUND.png")))
   scenes[0]:add(new_Button(1150, 800, image, "Cerrar", buton1press))
   scenes[0]:add(new_Button(750, 800, image, "Configuracion", cambiarEscena))
   scenes[0]:add(new_Button(350, 800, image, "Jugar", cambiarEscena))
   ---------------------------------------------------------------------------------------------------
-  local configbackground = new_Background(love.graphics.newImage("assets/Images/fondo.jpg"))
+  local configbackground = new_Background(love.graphics.newImage("assets/images/fondo.jpg"))
   local acceptbutton = new_Button(1150, 800, image, "Aceptar", cambiarEscena)
   scenes[1] = new_SceneMenu("config_video")
   scenes[1]:add(configbackground)
@@ -87,11 +90,11 @@ function love.load()
   scenes[3]:add(acceptbutton)
   ---------------------------------------------------------------------------------------------------  
   scenes[2] = new_SceneGame("game")
-  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/Images/background.jpg")))
+  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/images/background.jpg")))
   
   ---------------------------------------------------------------------------------------------------  
   isaac = new_Character(1, "Isaac")
-  local imgisaac = love.graphics.newImage("assets/Images/isaac.png")
+  local imgisaac = love.graphics.newImage("assets/images/isaac.png")
   local pose1 = new_Pose(imgisaac)
   
   pose1:addQuad("body", love.graphics.newQuad(0,0,461,607,imgisaac:getWidth(),imgisaac:getHeight()))
@@ -116,14 +119,12 @@ function love.load()
 end
 
 function love.update(dt)
-  if math.random(0, 140) == 0 then isaac:triggerAnimation("eyes") end
   scenes[currentScene]:update(dt)
 end
 
-function love.draw()  
+function love.draw()
   love.graphics.setColor(255,255,255)
   scenes[currentScene]:draw()
-  
   windowManager_drawBorders()
 end
 

@@ -5,7 +5,7 @@ local Character = {
   y = 0,
   poses = nil,
   currentPose = "",
-  
+
   ix = 0,
   iy = 0,
   mx = 0,
@@ -18,9 +18,11 @@ function new_Character(id, name)
   local o = {}
   setmetatable(o, Character)
   Character.__index = Character
+
   o.id = id
   o.name = name
   o.poses = {}
+
   return o
 end
 
@@ -46,9 +48,9 @@ function Character:setPose(pose)
 end
 
 function Character:triggerAnimation(animation)
-  if animation == "eyes" then self.currentPose:triggerEyes()
-  elseif animation == "mouth" then self.currentPose:triggerMouth() end
+  if animation == "mouth" then self.currentPose:triggerMouth() end
 end
+
 function Character:move(x, y, time)
   self.ix = self.x
   self.iy = self.y
@@ -59,12 +61,13 @@ function Character:move(x, y, time)
 end
 
 function Character:update(dt)
+  if math.random(0, 150) == 0 then self.currentPose:triggerEyes() end
+  
   if self.ms ~= 0 then
     local delta = love.timer.getTime() - self.mt
     if delta < self.ms then
       self.x = self.ix + (delta / self.ms) * self.mx
       self.y = self.iy + (delta / self.ms) * self.my
-      print(self.x, self.ix, self.mx)
     else
       self.x = self.ix + self.mx
       self.y = self.iy + self.my

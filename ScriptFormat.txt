@@ -1,0 +1,46 @@
+﻿<func> 		[par1] 		[par2] 		[par3] 		[par4] 		[parn]
+───────────────────────────────────────────────────────────────────────────────────────────
+background 	<path>
+sfx		<path>
+add		<ID>		<x>		<y>		<pose>
+move		<ID>		<dx>		<dy>
+text		<ID>		<unformText>
+text            next
+select		<ID>		<text>		<answer1>	<answer2>	[answern]
+───────────────────────────────────────────────────────────────────────────────────────────
+<p#>	Pose
+<d#>	Delay (ticks)
+
+<a#>	Animation 'a'
+<e#>	Animation 'e'
+<i#>	Animation 'i'
+<o#>	Animation 'o'
+<u#>	Animation 'u'
+
+===========================================================================================
+
+background "fondoPokemon.png"
+sfx "introPokemon.wav"
+add "Prof. Oak" 860 0 p1
+
+text "Prof. Oak" "¡Hola!\n¡Este es el mundo de Pokémon!"
+text "Prof. Oak" "<p2>¡Pero la gente me llama PROFESOR POKÉMON!"
+text "Prof. Oak" "¡Este mundo está"
+
+gfx "PokéballOut" wait //Esto no existe en la definición de nuestro pseudo-lenguaje (aún)
+sfx "seAbreLaPokeball.wav"
+
+text next
+
+text "Prof. Oak" "habitado por unas criaturas llamadas Pokémon!"
+text "Prof. Oak" "Para algunos, los Pokémon son mascotas. Pero otros los usan para pelear."
+text "Prof. Oak" "En cuanto a mi..."
+text "Prof. Oak" "Estudio a los Pokémon como profesión."
+
+gfx "PokéballIn" //Sigue sin existir lol
+sfx "seCierraLaPokeball.wav"
+
+text "Prof. Oak" "Bueno, cuéntame algo de ti."
+
+move "Prof. Oak" 400 0
+select "gender" "¿Eres chico o chica?" "Chico" "Chica"
