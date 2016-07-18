@@ -1,4 +1,5 @@
 require("src/FontManager/FontManager")
+require("src/TextManager/textmanager")
 
 require("src/Scene/SceneMenu")
 require("src/Scene/SceneGame")
@@ -25,6 +26,8 @@ require("src/GUI/Textbox")
 local fullScreen = false
 local scenes = {}
 currentScene = -1
+
+ProcessText()
 
 function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
@@ -114,8 +117,8 @@ function love.load()
   GUI:add(textbox)
   
   scenes[2]:setGUI(GUI)
-  
   ---------------------------------------------------------------------------------------------------  
+  
 end
 
 function love.update(dt)
