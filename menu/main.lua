@@ -90,7 +90,8 @@ function love.load()
   ---------------------------------------------------------------------------------------------------  
   scenes[2] = new_SceneGame("game")
 
-  local script = new_Script("src/TextManager/prueba.txt")
+  --[[
+  local script = new_Script("prueba.txt")
     
   for i, n in ipairs(script:getInit()) do
     if n[1] == "background" then
@@ -111,9 +112,24 @@ function love.load()
         scenes[2]:addCharacter(isaac)
       end
     end
-  end
+  end  
+  ]]--
   
-  local formatedText = textbox:format(script:next()[3])
+  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/images/background.jpg")))
+  local isaac = new_Character(1, "Isaac")
+  local imgisaac = love.graphics.newImage("assets/images/isaac.png")
+  local pose1 = new_Pose(imgisaac)
+  
+  pose1:addQuad("body", love.graphics.newQuad(0,0,461,607,imgisaac:getWidth(),imgisaac:getHeight()))
+  pose1:addQuad("eyes", love.graphics.newQuad(520,43,149,37,imgisaac:getWidth(),imgisaac:getHeight()), 154, 207)
+  pose1:addQuad("eyes", love.graphics.newQuad(520,82,149,37,imgisaac:getWidth(),imgisaac:getHeight()))
+  
+  isaac:addPose("normal", pose1)
+  isaac:setPose("normal")
+  isaac:setPosition(720, 272)
+  scenes[2]:addCharacter(isaac)
+        
+  local formatedText = textbox:format("Hola :D")
   textbox:setLines(formatedText)
   
   ---------------------------------------------------------------------------------------------------  
