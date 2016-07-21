@@ -12,7 +12,7 @@ function new_SceneIntro()
   SceneIntro.__index = SceneIntro
   
   o.t = love.timer.getTime()
-  o.d = love.graphics.newImage("assets/intro/SampleText.png")
+  o.d = love.graphics.newImage("assets/intro/NameNotFound.png")
   o.opening = love.graphics.newVideo("assets/intro/SIGA.ogv")
   
   return o

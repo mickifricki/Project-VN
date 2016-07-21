@@ -1,5 +1,5 @@
 require("src/FontManager/FontManager")
-require("src/TextManager/textmanager")
+require("src/Script/ScriptParser")
 
 require("src/Scene/SceneMenu")
 require("src/Scene/SceneGame")
@@ -27,8 +27,6 @@ local fullScreen = false
 local scenes = {}
 currentScene = -1
 
-ProcessText()
-
 function love.load()
   love.window.setTitle("NV Project ULTRA++ pre-alpha 0.0.0.1.1.Keepo /")
   local w, h = love.window.getDesktopDimensions()
@@ -39,8 +37,6 @@ function love.load()
   setFont("Meiryo", 20)
   
   local textbox = new_Textbox(80, 900, 1800, 120, "Meiryo", 40, "typewriter")
-  local formatedText = textbox:format("Hola :D")
-  textbox:setLines(formatedText)
   
   local image = love.graphics.newImage("assets/images/botonesv2.0.png")
   local imbutton = love.graphics.newImage("assets/images/bottonsimple.png")
@@ -56,7 +52,7 @@ function love.load()
   local acceptbutton = new_Button(1150, 800, image, "Aceptar", cambiarEscena)
   scenes[1] = new_SceneMenu("config_video")
   scenes[1]:add(configbackground)
-  scenes[1]:add(new_Button(500, 200, image, "Pantalla Completa", buton2press))
+  scenes[1]:add(new_Button(500, 200, image, "Fullscreen", buton2press))
   
   local tabs = new_ButtonArray()
   tabs:add(new_MenuTab(100, 100, imbutton, "Video", cambiarTab))
@@ -93,21 +89,32 @@ function love.load()
   scenes[3]:add(acceptbutton)
   ---------------------------------------------------------------------------------------------------  
   scenes[2] = new_SceneGame("game")
-  scenes[2]:setBackground(new_Background(love.graphics.newImage("assets/images/background.jpg")))
+
+  local script = new_Script("src/TextManager/prueba.txt")
+    
+  for i, n in ipairs(script:getInit()) do
+    if n[1] == "background" then
+      scenes[2]:setBackground(new_Background(love.graphics.newImage(n[2])))
+    elseif n[1] == "add" then
+      if n[2] == "Isaac" then
+        isaac = new_Character(1, "Isaac")
+        local imgisaac = love.graphics.newImage("assets/images/isaac.png")
+        local pose1 = new_Pose(imgisaac)
+        
+        pose1:addQuad("body", love.graphics.newQuad(0,0,461,607,imgisaac:getWidth(),imgisaac:getHeight()))
+        pose1:addQuad("eyes", love.graphics.newQuad(520,43,149,37,imgisaac:getWidth(),imgisaac:getHeight()), 154, 207)
+        pose1:addQuad("eyes", love.graphics.newQuad(520,82,149,37,imgisaac:getWidth(),imgisaac:getHeight()))
+        
+        isaac:addPose("normal", pose1)
+        isaac:setPose(n[5])
+        isaac:setPosition(n[3], n[4])
+        scenes[2]:addCharacter(isaac)
+      end
+    end
+  end
   
-  ---------------------------------------------------------------------------------------------------  
-  isaac = new_Character(1, "Isaac")
-  local imgisaac = love.graphics.newImage("assets/images/isaac.png")
-  local pose1 = new_Pose(imgisaac)
-  
-  pose1:addQuad("body", love.graphics.newQuad(0,0,461,607,imgisaac:getWidth(),imgisaac:getHeight()))
-  pose1:addQuad("eyes", love.graphics.newQuad(520,43,149,37,imgisaac:getWidth(),imgisaac:getHeight()), 154, 207)
-  pose1:addQuad("eyes", love.graphics.newQuad(520,82,149,37,imgisaac:getWidth(),imgisaac:getHeight()))
-  
-  isaac:addPose("normal", pose1)
-  isaac:setPose("normal")
-  isaac:setPosition(700, 272)
-  scenes[2]:addCharacter(isaac)
+  local formatedText = textbox:format(script:next()[3])
+  textbox:setLines(formatedText)
   
   ---------------------------------------------------------------------------------------------------  
   
@@ -155,8 +162,6 @@ function love.keyreleased(key, scancode, isrepeat)
 end
 
 function buton1press()
-  love.graphics.setColor(0, 0, 0)
-  windowManager_print("fuck u")
   love.event.quit(0)
 end
 

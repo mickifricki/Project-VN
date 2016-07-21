@@ -1,6 +1,6 @@
 require("lib/UTF8/utf8")
 
-velocity = 0.1
+velocity = 0.01
 
 local Textbox = {
   x = 0,
@@ -42,15 +42,22 @@ function Textbox:format(text)
   local font = getFont(self.font, self.size)
   local currentLine = ""
   for i in string.gmatch(text, "[^ ]+[ \t]*") do
-    if string.find(i, "\n") == nil then
+    if string.find(i, "^") == nil then
       if font:getWidth(currentLine .. i) <= self.w then currentLine = currentLine .. string.match(i, "%S+") .. " "
       else
         table.insert(lines, currentLine)
         currentLine = string.match(i, "%S+") .. " "
       end
     else
-      table.insert(lines, currentLine .. string.match(i, "%S+"))
-      currentLine = ""
+    local prev = nil
+      for j in string.gmatch(i, "[^^]+") do
+        if prev ~= nil then
+          table.insert(lines, currentLine .. prev)
+          currentLine = ""
+        end
+        prev = j
+      end
+    if prev ~= nil then currentLine = currentLine .. prev .. " " end
     end
   end
   table.insert(lines, currentLine)

@@ -61,7 +61,7 @@ function Character:move(x, y, time)
 end
 
 function Character:update(dt)
-  if math.random(0, 150) == 0 then self.currentPose:triggerEyes() end
+  if math.random(0, 300) == 0 then self.currentPose:triggerEyes() end
   
   if self.ms ~= 0 then
     local delta = love.timer.getTime() - self.mt

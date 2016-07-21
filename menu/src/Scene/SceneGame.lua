@@ -1,11 +1,9 @@
 local SceneGame = {
-  id        = "",
+  id = "",
   background = nil,
   characters = nil,
   effects = nil,
-  GUI = nil,
-  
-  displayGUI = true
+  GUI = nil
 }
 
 function new_SceneGame(id)

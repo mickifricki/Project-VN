@@ -1,5 +1,24 @@
-En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.
-Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda.
-El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino.
-Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera.
-Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza.
+--init
+
+background|assets/images/background.jpg
+add|Isaac|720|272|normal
+
+--script
+
+text|Isaac|¡Hola!^¡Este es el mundo de Pokémon!
+text|Isaac|<p2>¡Pero la gente me llama PROFESOR POKÉMON!
+text|Isaac|¡Este mundo está|auto
+
+sfx|seAbreLaPokeball.wav
+
+text|Isaac|habitado por unas criaturas llamadas Pokémon!
+text|Isaac|Para algunos, los Pokémon son mascotas. Pero otros los usan para pelear.
+text|Isaac|En cuanto a mi...
+text|Isaac|Estudio a los Pokémon como profesión.
+
+sfx|seCierraLaPokeball.wav
+
+text|Isaac|Bueno, cuéntame algo de ti.
+
+move|Isaac|400|0
+select|gender|¿Eres chico o chica?|Chico|Chica
